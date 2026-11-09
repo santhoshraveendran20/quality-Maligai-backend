@@ -1,0 +1,31 @@
+# Dependencies
+node_modules/
+
+# Environment files: they hold the MongoDB connection string (keep .env.example)
+.env
+.env.*
+!.env.example
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Runtime and test output
+pids/
+*.pid
+coverage/
+
+# Local MongoDB data folder, if you run mongod inside the project
+data/
+
+# Editors and OS
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
