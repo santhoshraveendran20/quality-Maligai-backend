@@ -3,7 +3,7 @@ import { fileURLToPath } from 'node:url';
 import express from 'express';
 import cors from 'cors';
 import { config } from './config.js';
-import { isDBConnected } from './db.js';
+import { connectDB, isDBConnected } from './db.js';
 import reviewsRouter from './routes/reviews.js';
 import { errorHandler, notFound } from './middleware/errors.js';
 
@@ -43,3 +43,22 @@ export function createApp() {
   app.use(errorHandler);
   return app;
 }
+
+// Vercel runs this file as a serverless function and needs the app as the default export.
+// There is no `app.listen()` there, so connect to MongoDB on the first request and reuse it.
+let dbReady;
+const serverlessApp = express();
+serverlessApp.use(async (req, res, next) => {
+  try {
+    dbReady ??= connectDB(config.mongoUri);
+    await dbReady;
+    next();
+  } catch (err) {
+    dbReady = undefined;
+    console.error(`[db] ${err.message}`);
+    res.status(503).json({ error: 'Database is unavailable. Please try again shortly.' });
+  }
+});
+serverlessApp.use(createApp());
+
+export default serverlessApp;
