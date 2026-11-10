@@ -14,6 +14,8 @@ export const config = {
   clientOrigins: [
     ...new Set([
       'https://quality-maligai-frontend.vercel.app',
+      'https://qualityqualitymaligai.in',
+      'https://www.qualityqualitymaligai.in',
       'http://localhost:5173',
       'http://127.0.0.1:5173',
       ...toList(process.env.CLIENT_ORIGIN),
